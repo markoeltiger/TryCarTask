@@ -6,8 +6,8 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import java.util.*
-@Entity(tableName = "post_table", indices = [Index(value = ["title"], unique = true)])
 
+@Entity(tableName = "post_table", indices = [Index(value = ["title"], unique = true)])
 data class PostsItem(
     @SerializedName("body")
     val body: String?,
