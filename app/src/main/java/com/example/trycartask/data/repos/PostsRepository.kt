@@ -9,6 +9,7 @@ import com.example.trycartask.data.models.PostsItem
 import com.example.trycartask.data.remote.Api
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.net.InetAddress
 import java.net.UnknownHostException
 import javax.net.ssl.SSLException
 import kotlin.coroutines.CoroutineContext
@@ -50,8 +51,10 @@ class PostsRepository(
 
     fun getStories(): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
         val dao = db.postsDao()
+        if (isInternetAvailable()) {
+            getResponse()
+        }
 
-        getResponse()
         return dao.getAllPosts().asFlow()
 
 
@@ -86,7 +89,15 @@ class PostsRepository(
         }
     }
 
-
+    fun isInternetAvailable(): Boolean {
+        return try {
+            val ipAddr: InetAddress = InetAddress.getByName("google.com")
+            //You can replace it with your name
+            !ipAddr.equals("")
+        } catch (e: java.lang.Exception) {
+            false
+        }
+    }
 }
 
 

@@ -2,13 +2,11 @@ package com.example.trycartask.data.repos
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import com.example.trycartask.data.local.AppDatabase
 import com.example.trycartask.data.models.Comments
 import com.example.trycartask.data.models.CommentsItem
 import com.example.trycartask.data.remote.Api
-import com.example.trycartask.utils.NetworkState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -37,8 +35,7 @@ class CommentsRepository(
 
     fun getComments(postId: Int): kotlinx.coroutines.flow.Flow<List<CommentsItem>> {
         val dao = db.commentsDao()
-        val networkState = MutableLiveData<NetworkState>()
-        val refreshTrigger = MutableLiveData<Unit?>()
+
         getResponse(postId)
         return dao.getAllComments().asFlow()
 
