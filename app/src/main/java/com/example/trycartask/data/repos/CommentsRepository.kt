@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import com.example.trycartask.data.local.AppDatabase
-import com.example.trycartask.data.models.Posts
+import com.example.trycartask.data.models.Comments
 import com.example.trycartask.data.models.PostsItem
 import com.example.trycartask.data.remote.Api
 import com.example.trycartask.utils.NetworkState
@@ -16,7 +16,7 @@ import javax.net.ssl.SSLException
 import kotlin.coroutines.CoroutineContext
 
 
-class PostsRepository(
+class CommentsRepository(
     private val context: Context,
     private val db: AppDatabase,
 
@@ -26,29 +26,29 @@ class PostsRepository(
     /**
      * Inserts the response into the database.
      */
-    private fun insertResultIntoDb(posts: Posts) {
-        val dao = db.postsDao()
+    private fun insertResultIntoDb(comments: Comments) {
+        val dao = db.commentsDao()
         CoroutineScope(this.coroutineContext).launch {
 
-            dao.insert(posts)
+            dao.insert(comments)
         }
     }
 
 
-    fun getStories(): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
+    fun getStories(postId: Int): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
         val dao = db.postsDao()
         val networkState = MutableLiveData<NetworkState>()
         val refreshTrigger = MutableLiveData<Unit?>()
-        getResponse()
+        getResponse(postId)
         return dao.getAllPosts().asFlow()
 
 
     }
 
-    private fun getResponse() {
+    private fun getResponse(postId: Int) {
         try {
             CoroutineScope(this.coroutineContext).launch {
-                val response = apiList.getPosts()
+                val response = apiList.getComments(postId)
                 if (!response.isSuccessful) {
                     val error = response.errorBody()
                     Log.e("Error", "Error With Response")

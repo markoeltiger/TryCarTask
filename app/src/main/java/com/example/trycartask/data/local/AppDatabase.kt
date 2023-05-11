@@ -4,7 +4,6 @@ package com.example.trycartask.data.local
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.trycartask.data.models.CommentsItem
-import com.example.trycartask.data.models.Posts
 import com.example.trycartask.data.models.PostsItem
 
 
@@ -20,8 +19,10 @@ abstract class AppDatabase : RoomDatabase() {
 interface PostsDao {
 
     @Query("SELECT * FROM post_table ORDER BY id DESC")
-    fun getAllPosts( ): LiveData<List<PostsItem>>
+    fun getAllPosts(): LiveData<List<PostsItem>>
 
+    @Query("SELECT * FROM post_table WHERE id =:id ")
+    fun getPostbyId(id: Int): LiveData<List<PostsItem>>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -35,5 +36,7 @@ interface PostsDao {
 
 @Dao
 interface CommentsDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insert(posts: List<CommentsItem>)
 
 }
