@@ -22,7 +22,7 @@ interface PostsDao {
     fun getAllPosts(): LiveData<List<PostsItem>>
 
     @Query("SELECT * FROM post_table WHERE id =:id ")
-    fun getPostbyId(id: Int): LiveData<List<PostsItem>>
+    fun getPostbyId(id: Int): LiveData<PostsItem>
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -36,6 +36,9 @@ interface PostsDao {
 
 @Dao
 interface CommentsDao {
+    @Query("SELECT * FROM comment_table ORDER BY id DESC")
+    fun getAllComments(): LiveData<List<CommentsItem>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(posts: List<CommentsItem>)
 

@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import com.example.trycartask.data.local.AppDatabase
 import com.example.trycartask.data.models.Comments
-import com.example.trycartask.data.models.PostsItem
+import com.example.trycartask.data.models.CommentsItem
 import com.example.trycartask.data.remote.Api
 import com.example.trycartask.utils.NetworkState
 import kotlinx.coroutines.CoroutineScope
@@ -35,12 +35,12 @@ class CommentsRepository(
     }
 
 
-    fun getStories(postId: Int): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
-        val dao = db.postsDao()
+    fun getComments(postId: Int): kotlinx.coroutines.flow.Flow<List<CommentsItem>> {
+        val dao = db.commentsDao()
         val networkState = MutableLiveData<NetworkState>()
         val refreshTrigger = MutableLiveData<Unit?>()
         getResponse(postId)
-        return dao.getAllPosts().asFlow()
+        return dao.getAllComments().asFlow()
 
 
     }

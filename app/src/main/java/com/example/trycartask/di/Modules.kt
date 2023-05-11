@@ -1,13 +1,12 @@
 package io.ak1.nytimes.di
 
+import com.example.trycartask.data.repos.CommentsRepository
 import com.example.trycartask.data.repos.PostsRepository
+import com.example.trycartask.ui.screens.details.DetailsViewModel
 import com.example.trycartask.ui.screens.home.PostsViewModel
-
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.scope.get
 import org.koin.dsl.module
-
 
 
 /**
@@ -27,8 +26,18 @@ var databaseModule = module {
 var repoModule = module {
     single { getCoroutineContext() }
     single { PostsRepository(get(), get(), get(), get()) }
+    single { CommentsRepository(get(), get(), get(), get()) }
+
 }
 
 var viewModelModule = module {
-    viewModel { PostsViewModel(get()) }
+    viewModel {
+        PostsViewModel(get())
+
+    }
+
+    viewModel {
+        DetailsViewModel(get(), get())
+
+    }
 }

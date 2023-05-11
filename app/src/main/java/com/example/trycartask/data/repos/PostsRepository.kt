@@ -34,6 +34,10 @@ class PostsRepository(
         }
     }
 
+    fun getPostById(id: Int): kotlinx.coroutines.flow.Flow<PostsItem> {
+        val dao = db.postsDao()
+        return dao.getPostbyId(id).asFlow()
+    }
 
     fun getStories(): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
         val dao = db.postsDao()
