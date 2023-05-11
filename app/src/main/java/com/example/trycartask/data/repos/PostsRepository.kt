@@ -1,6 +1,8 @@
 package com.example.trycartask.data.repos
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.util.Log
 import androidx.lifecycle.asFlow
 import com.example.trycartask.data.local.AppDatabase
@@ -9,7 +11,6 @@ import com.example.trycartask.data.models.PostsItem
 import com.example.trycartask.data.remote.Api
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.net.InetAddress
 import java.net.UnknownHostException
 import javax.net.ssl.SSLException
 import kotlin.coroutines.CoroutineContext
@@ -51,7 +52,8 @@ class PostsRepository(
 
     fun getStories(): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
         val dao = db.postsDao()
-        if (isInternetAvailable()) {
+        if (isInternetAvailable(context)) {
+            Log.e("internetavailllllavle", "internetavailllllavle")
             getResponse()
         }
 
@@ -89,15 +91,28 @@ class PostsRepository(
         }
     }
 
-    fun isInternetAvailable(): Boolean {
-        return try {
-            val ipAddr: InetAddress = InetAddress.getByName("google.com")
-            //You can replace it with your name
-            !ipAddr.equals("")
-        } catch (e: java.lang.Exception) {
-            false
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connectivityManager != null) {
+            val capabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            if (capabilities != null) {
+                if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_CELLULAR")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_WIFI")
+                    return true
+                } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                    Log.i("Internet", "NetworkCapabilities.TRANSPORT_ETHERNET")
+                    return true
+                }
+            }
         }
+        return false
     }
+
 }
 
 
