@@ -41,6 +41,8 @@ fun PostListItem(post: PostsItem, navigateToProfile: (PostsItem) -> Unit) {
 
             navigateToProfile(post)
         }) {
+
+
             Column(
                 modifier = Modifier
                     .padding(8.dp)

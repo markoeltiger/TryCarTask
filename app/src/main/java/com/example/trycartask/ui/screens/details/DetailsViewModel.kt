@@ -14,6 +14,7 @@ class DetailsViewModel(
     fun getSinglePost(id: Int) = postsRepo.getPostById(id)
 
     fun getComments(id: Int) = commentsRepo.getComments(id)
-
+    fun addBookmark(id: Int) = postsRepo.addBookmark(id)
+    fun deleteBookmark(id: Int) = postsRepo.deleteBookmark(id)
 
 }

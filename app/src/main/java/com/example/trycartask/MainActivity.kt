@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.example.trycartask.ui.screens.home.HomeScreen
 import com.example.trycartask.ui.screens.home.PostsList
 import com.example.trycartask.ui.screens.home.PostsViewModel
 import com.example.trycartask.ui.theme.TryCarTaskTheme
@@ -49,8 +48,8 @@ class MainActivity : AppCompatActivity() {
                 }
             }
             when (tabIndex) {
-                0 -> PostsList(liveViewModel,{})
-                1 -> HomeScreen()
+                0 -> PostsList(liveViewModel, {}, false)
+                1 -> PostsList(liveViewModel, {}, true)
 
             }
         }

@@ -2,13 +2,11 @@ package com.example.trycartask.data.repos
 
 import android.content.Context
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asFlow
 import com.example.trycartask.data.local.AppDatabase
 import com.example.trycartask.data.models.Posts
 import com.example.trycartask.data.models.PostsItem
 import com.example.trycartask.data.remote.Api
-import com.example.trycartask.utils.NetworkState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.net.UnknownHostException
@@ -39,12 +37,30 @@ class PostsRepository(
         return dao.getPostbyId(id).asFlow()
     }
 
+    fun addBookmark(id: Int) {
+        Log.e("BookmarkId", id.toString())
+        val dao = db.postsDao()
+        dao.addBookmark(id)
+    }
+
+    fun deleteBookmark(id: Int) {
+        val dao = db.postsDao()
+        dao.deleteBookmark(id)
+    }
+
     fun getStories(): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
         val dao = db.postsDao()
-        val networkState = MutableLiveData<NetworkState>()
-        val refreshTrigger = MutableLiveData<Unit?>()
+
         getResponse()
         return dao.getAllPosts().asFlow()
+
+
+    }
+
+    fun getBookmarkedPosts(): kotlinx.coroutines.flow.Flow<List<PostsItem>> {
+        val dao = db.postsDao()
+
+        return dao.getBookmarkedPosts().asFlow()
 
 
     }

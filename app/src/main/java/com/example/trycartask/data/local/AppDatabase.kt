@@ -21,9 +21,17 @@ interface PostsDao {
     @Query("SELECT * FROM post_table ORDER BY id DESC")
     fun getAllPosts(): LiveData<List<PostsItem>>
 
+    @Query("SELECT * FROM post_table WhERE bookmarked = 1 ORDER BY id DESC ")
+    fun getBookmarkedPosts(): LiveData<List<PostsItem>>
+
     @Query("SELECT * FROM post_table WHERE id =:id ")
     fun getPostbyId(id: Int): LiveData<PostsItem>
 
+    @Query("UPDATE  post_table SET bookmarked=1 WHERE id =:id ")
+    fun addBookmark(id: Int)
+
+    @Query("UPDATE  post_table SET bookmarked=0 WHERE id =:id ")
+    fun deleteBookmark(id: Int)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(posts: List<PostsItem>)

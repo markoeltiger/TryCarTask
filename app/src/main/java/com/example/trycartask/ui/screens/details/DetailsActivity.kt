@@ -7,7 +7,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -27,7 +26,7 @@ class DetailsActivity : ComponentActivity() {
             val context = LocalContext.current
             val activity = context.findActivity()
             val intent = activity?.intent
-            val id = intent!!.getIntExtra("id", 0)
+            val id = intent!!.getIntExtra("postId", 0)
             TryCarTaskTheme {
 
                 // A surface container using the 'background' color from the theme
@@ -35,12 +34,12 @@ class DetailsActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
+
                     com.example.trycartask.ui.screens.details.DetailsComponenet(
                         viewModel = liveViewModel,
                         id,
                         navigateToProfile = {}
                     )
-
                 }
             }
         }
